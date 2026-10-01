@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-sky: #0ea5e9;
+    --color-blue: #2563eb;
+    --color-orange: #f97316;
+    --color-red: #ef4444;
+    --color-navy: #0f172a;
+  }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    color: #0f172a;
+    background-color: #ffffff;
+    overflow-x: hidden;
+  }
+}
+
+/* Pulsing animated buttons in vibrant Orange & Red for max conversion */
+@keyframes attentionPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 10px 25px -4px rgba(249, 115, 22, 0.4), 0 8px 10px -6px rgba(239, 68, 68, 0.3);
+  }
+  50% {
+    transform: scale(1.025);
+    box-shadow: 0 20px 35px -4px rgba(249, 115, 22, 0.6), 0 10px 15px -4px rgba(239, 68, 68, 0.5);
+  }
+}
+
+.animate-attention-pulse {
+  animation: attentionPulse 3s ease-in-out infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #0ea5e9;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #f97316;
+}
