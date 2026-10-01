@@ -281,22 +281,41 @@ export default function StudentWebsitesShowcase() {
                 </p>
               </div>
 
-              {/* Action Button: Live External Link */}
-              <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+              {/* Action Button: Live External Link - Animated Button Shape */}
+              <div className="mt-5 pt-4 border-t border-slate-100 flex flex-col gap-2">
                 <a
                   href={site.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs font-black text-sky-600 hover:text-blue-800 transition-colors"
+                  className="relative group/btn overflow-hidden w-full flex items-center justify-between px-4 py-3 rounded-xl bg-gradient-to-r from-blue-600 via-sky-600 to-blue-700 hover:from-blue-700 hover:to-sky-800 text-white font-black text-xs uppercase tracking-wider shadow-md hover:shadow-xl shadow-blue-500/25 hover:scale-[1.02] active:scale-[0.98] transition-all border border-blue-400/30"
                 >
-                  <Globe className="w-3.5 h-3.5" />
-                  <span>Visit Live Website</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
+                  {/* Shimmer light sweep animation across button on hover */}
+                  <div className="absolute inset-0 -translate-x-full group-hover/btn:translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 ease-in-out pointer-events-none" />
+
+                  <div className="flex items-center gap-2">
+                    {/* Animated Pulsing Live Green Dot */}
+                    <span className="relative flex h-2.5 w-2.5 shrink-0">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400"></span>
+                    </span>
+                    <Globe className="w-4 h-4 shrink-0 transition-transform group-hover/btn:rotate-12 text-sky-200" />
+                    <span className="tracking-wide">VISIT LIVE WEBSITE</span>
+                  </div>
+
+                  <div className="flex items-center gap-1 text-sky-200 group-hover/btn:text-white transition-colors">
+                    <span className="text-[10px] font-bold hidden xs:inline uppercase opacity-90">Open</span>
+                    <ExternalLink className="w-3.5 h-3.5 shrink-0 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+                  </div>
                 </a>
 
-                <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                  Student Project
-                </span>
+                <div className="flex items-center justify-between text-[11px] text-slate-500 font-semibold px-1">
+                  <span className="text-emerald-600 font-bold flex items-center gap-1">
+                    ✓ 100% Student Built
+                  </span>
+                  <span className="text-slate-400 truncate max-w-[140px]">
+                    {site.url.replace('https://', '')}
+                  </span>
+                </div>
               </div>
             </div>
           ))}
