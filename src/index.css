@@ -2,38 +2,108 @@
 
 @layer base {
   :root {
-    --color-sky: #0ea5e9;
     --color-blue: #2563eb;
-    --color-orange: #f97316;
-    --color-red: #ef4444;
-    --color-navy: #0f172a;
+    --color-orange: #ea580c;
+    --color-black: #000000;
+    --color-white: #ffffff;
   }
 
   body {
     font-family: 'Poppins', sans-serif;
-    color: #0f172a;
+    color: #000000;
     background-color: #ffffff;
     overflow-x: hidden;
   }
 }
 
-/* Pulsing animated buttons in vibrant Orange & Red for max conversion */
+/* Floating hover animation for CTA & Credibility buttons */
+@keyframes floatHover {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-float-hover {
+  animation: floatHover 3.2s ease-in-out infinite;
+}
+
+/* Pulsing attention animation for primary Buy Now buttons */
 @keyframes attentionPulse {
   0%, 100% {
     transform: scale(1);
-    box-shadow: 0 10px 25px -4px rgba(249, 115, 22, 0.4), 0 8px 10px -6px rgba(239, 68, 68, 0.3);
+    box-shadow: 0 10px 25px -4px rgba(234, 88, 12, 0.4);
   }
   50% {
     transform: scale(1.025);
-    box-shadow: 0 20px 35px -4px rgba(249, 115, 22, 0.6), 0 10px 15px -4px rgba(239, 68, 68, 0.5);
+    box-shadow: 0 20px 35px -4px rgba(234, 88, 12, 0.65);
   }
 }
 
 .animate-attention-pulse {
-  animation: attentionPulse 3s ease-in-out infinite;
+  animation: attentionPulse 2.8s ease-in-out infinite;
 }
 
-/* Custom scrollbar */
+/* Shimmer light sweep keyframe for glassmorphism buttons */
+@keyframes shineSweep {
+  0% {
+    transform: translateX(-100%) skewX(-15deg);
+  }
+  100% {
+    transform: translateX(200%) skewX(-15deg);
+  }
+}
+
+.animate-shimmer {
+  animation: shineSweep 3.5s infinite ease-in-out;
+}
+
+/* Subtle glow pulse */
+@keyframes glowBorder {
+  0%, 100% {
+    border-color: rgba(234, 88, 12, 0.4);
+  }
+  50% {
+    border-color: rgba(234, 88, 12, 0.95);
+  }
+}
+
+.animate-glow-border {
+  animation: glowBorder 2.5s ease-in-out infinite;
+}
+
+/* Glassmorphism helpers */
+.morphism-glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.morphism-glass-dark {
+  background: rgba(10, 10, 10, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.morphism-glass-blue {
+  background: rgba(37, 99, 235, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.morphism-glass-orange {
+  background: rgba(234, 88, 12, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+/* Custom sleek scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -41,9 +111,9 @@
   background: #f1f5f9;
 }
 ::-webkit-scrollbar-thumb {
-  background: #0ea5e9;
+  background: #2563eb;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #f97316;
+  background: #ea580c;
 }

@@ -1,86 +1,81 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
-import { Volume2, VolumeX, Play, Volume1 } from 'lucide-react';
-import { trackMetaCustom } from '../utils/metaPixel';
+import { Volume2, VolumeX, Play, RotateCcw } from 'lucide-react';
 
 export default function VideoProofPlayer() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  // Default sound state is ON (unmuted)
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
-  // Function to unmute and ensure 100% volume
-  const activateSound = useCallback(() => {
+  // Play with full loud sound from the beginning (0:00)
+  const playFromBeginningWithSound = useCallback(() => {
     const video = videoRef.current;
     if (!video) return;
 
+    // Always restart from the beginning when clicked, with loud sound ON
+    video.currentTime = 0;
     video.muted = false;
     video.volume = 1.0;
-    
-    // If the video was playing silently for the first few seconds, restart from 0 so visitor hears everything
-    if (video.currentTime < 5) {
-      video.currentTime = 0;
-    }
-
-    const p = video.play();
-    if (p !== undefined) {
-      p.then(() => {
-        setIsMuted(false);
-        setIsPlaying(true);
-        trackMetaCustom('VideoSoundActive', { content_name: 'School Management Demo' });
-      }).catch((err) => {
-        console.debug('Direct unmuted play blocked by browser policy:', err);
-      });
-    }
-  }, []);
-
-  // Primary playback handler
-  const playVideoWithSound = useCallback((video: HTMLVideoElement) => {
-    video.volume = 1.0;
-    video.muted = false;
 
     const promise = video.play();
     if (promise !== undefined) {
       promise
         .then(() => {
-          // Direct unmuted autoplay allowed by browser!
-          setIsPlaying(true);
           setIsMuted(false);
+          setIsPlaying(true);
         })
         .catch((err) => {
-          console.debug('Browser blocked initial unmuted play, fallback to silent preview until user clicks:', err);
-          // Fallback to muted playback so visitor sees active video preview
-          video.muted = true;
-          video.play().then(() => {
-            setIsPlaying(true);
-            setIsMuted(true);
-          }).catch(() => {});
+          console.debug('Unmuted play blocked by browser policy:', err);
+          // If browser still restricts unmuted audio, ensure it plays at least
+          video.play().then(() => setIsPlaying(true)).catch(() => {});
         });
     }
   }, []);
 
-  // Ref callback to initialize video on mount
+  // Primary ref callback:
+  // Starts playing automatically by default on page load (muted for browser compliance)
   const setVideoRef = useCallback((node: HTMLVideoElement | null) => {
     if (node) {
       videoRef.current = node;
-      node.volume = 1.0;
-      node.muted = false;
-      playVideoWithSound(node);
+      node.muted = true;
+      node.defaultMuted = true;
+      node.playsInline = true;
+      
+      const p = node.play();
+      if (p !== undefined) {
+        p.then(() => {
+          setIsPlaying(true);
+          // Attempt unmuting immediately if browser MEI permits
+          node.muted = false;
+          node.volume = 1.0;
+          setIsMuted(false);
+        }).catch(() => {
+          // Fallback to active muted playback so video is constantly rolling on page load
+          node.muted = true;
+          node.play().then(() => {
+            setIsPlaying(true);
+            setIsMuted(true);
+          }).catch(() => {});
+        });
+      }
     }
-  }, [playVideoWithSound]);
+  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    // Global listener: On ANY valid user click or tap anywhere on the entire page, immediately unmute!
+    // Ensure the video is actively streaming
+    if (video.paused) {
+      video.play().then(() => setIsPlaying(true)).catch(() => {});
+    }
+
+    // On the very first user interaction anywhere on the document, unmute loud sound
     const handleDocumentInteraction = () => {
       const v = videoRef.current;
-      if (v && (v.muted || v.volume === 0)) {
+      if (v && v.muted) {
         v.muted = false;
         v.volume = 1.0;
-        if (v.currentTime < 5) {
-          v.currentTime = 0;
-        }
         v.play().then(() => {
           setIsMuted(false);
           setIsPlaying(true);
@@ -88,18 +83,16 @@ export default function VideoProofPlayer() {
       }
     };
 
-    // Use ONLY real User Activation events (click, pointerdown, touchend)
-    // NEVER use scroll or mousemove as they are rejected by Chrome/Safari and break the activation token
     document.addEventListener('click', handleDocumentInteraction, { capture: true });
     document.addEventListener('pointerdown', handleDocumentInteraction, { capture: true });
-    document.addEventListener('touchend', handleDocumentInteraction, { capture: true });
+    document.addEventListener('touchstart', handleDocumentInteraction, { capture: true });
 
-    // When video enters viewport, make sure it's playing
+    // Intersection Observer to keep playback rolling when in viewport
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting && video.paused) {
-            video.play().catch(() => {});
+            video.play().then(() => setIsPlaying(true)).catch(() => {});
           }
         });
       },
@@ -110,10 +103,16 @@ export default function VideoProofPlayer() {
     return () => {
       document.removeEventListener('click', handleDocumentInteraction, { capture: true });
       document.removeEventListener('pointerdown', handleDocumentInteraction, { capture: true });
-      document.removeEventListener('touchend', handleDocumentInteraction, { capture: true });
+      document.removeEventListener('touchstart', handleDocumentInteraction, { capture: true });
       observer.disconnect();
     };
   }, []);
+
+  // When user clicks the video or orange button: ALWAYS plays from beginning with sound
+  const handleVideoClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    playFromBeginningWithSound();
+  };
 
   const toggleSound = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -121,38 +120,38 @@ export default function VideoProofPlayer() {
     if (!video) return;
 
     if (video.muted || video.volume === 0) {
-      activateSound();
+      video.muted = false;
+      video.volume = 1.0;
+      setIsMuted(false);
     } else {
       video.muted = true;
       setIsMuted(true);
     }
   };
 
-  const handleContainerClick = () => {
-    activateSound();
-  };
-
   return (
     <div 
-      onClick={handleContainerClick}
-      className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black shadow-2xl border-2 border-amber-500/50 group cursor-pointer"
+      onClick={handleVideoClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black shadow-2xl border-4 border-orange-500 group cursor-pointer"
     >
       {/* 
         Native HTML5 Video Element:
-        - Volume set to 1.0 (100% volume)
-        - Sound unmuted by default
-        - Optimized with faststart for zero-latency streaming
+        - autoPlay + muted guarantees rolling video by default across all browsers
+        - playsInline prevents forced fullscreen on mobile
       */}
       <video
         ref={setVideoRef}
         src="/videos/school-management-demo.mp4"
         poster="/videos/school-management-poster.jpg"
         autoPlay
+        muted
         loop
         playsInline
         controls
         preload="auto"
-        className="w-full h-full object-cover rounded-2xl"
+        className="w-full h-full object-cover rounded-xl"
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
         onVolumeChange={() => {
@@ -165,66 +164,86 @@ export default function VideoProofPlayer() {
         Your browser does not support the video tag.
       </video>
 
-      {/* Prominent High-Visibility Unmute Banner when muted by browser policy */}
+      {/* 
+        CENTER ORANGE PLAY BUTTON OVERLAY
+        Clicking this restarts the video from the beginning (0:00) with loud sound ON
+      */}
       {isMuted && (
         <div 
-          onClick={activateSound}
-          className="absolute inset-0 bg-black/40 backdrop-blur-2xs flex flex-col items-center justify-center p-4 z-20 transition-all hover:bg-black/30 cursor-pointer"
+          onClick={handleVideoClick}
+          className="absolute inset-0 bg-black/40 backdrop-blur-2xs flex items-center justify-center p-4 z-20 cursor-pointer transition-all hover:bg-black/30"
         >
-          {/* Animated Pulsing Sound Waves Button */}
-          <div className="relative flex items-center justify-center mb-3">
-            <span className="absolute w-24 h-24 rounded-full bg-orange-500/40 animate-ping"></span>
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-r from-red-600 via-orange-500 to-amber-500 text-white flex items-center justify-center shadow-2xl shadow-orange-500/80 group-hover:scale-110 active:scale-95 transition-transform border-2 border-white">
-              <Volume2 className="w-8 h-8 sm:w-10 sm:h-10 text-white animate-bounce" />
+          <div className="flex flex-col items-center gap-3 transform transition-all duration-300 hover:scale-105 active:scale-95">
+            
+            {/* Animated Pulsing Ring & Big Play Button */}
+            <div className="relative flex items-center justify-center">
+              <span className="absolute w-24 h-24 rounded-full bg-orange-500/50 animate-ping"></span>
+              <button
+                type="button"
+                onClick={handleVideoClick}
+                className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-orange-600 hover:bg-orange-500 text-white flex items-center justify-center shadow-2xl border-2 border-white transition-all cursor-pointer shadow-orange-600/50"
+              >
+                <Play className="w-8 h-8 sm:w-10 sm:h-10 text-white fill-white ml-1" />
+              </button>
             </div>
-          </div>
 
-          <div className="text-center max-w-md px-4">
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-orange-600 text-white text-xs sm:text-sm font-black uppercase tracking-wider shadow-xl border border-orange-400">
-              <Volume2 className="w-4 h-4 shrink-0 animate-pulse" />
-              <span>CLICK TO TURN SOUND ON (100% VOICE)</span>
-            </span>
-            <p className="text-[11px] sm:text-xs text-white/95 font-bold mt-2 drop-shadow-md">
-              Tap anywhere on this video to listen to the full demonstration
+            {/* Click to Watch Banner */}
+            <button
+              type="button"
+              onClick={handleVideoClick}
+              className="px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-xs sm:text-sm font-black uppercase tracking-wider shadow-2xl border border-white/60 cursor-pointer animate-pulse"
+            >
+              ▶ CLICK TO RESTART FROM BEGINNING WITH LOUD SOUND (100%)
+            </button>
+            
+            <p className="text-[11px] text-white/95 font-bold drop-shadow">
+              Tap anywhere on this video to hear the complete student demonstration from the start
             </p>
           </div>
         </div>
       )}
 
-      {/* Top Left Audio Status Pill */}
-      <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-30 pointer-events-auto">
+      {/* Top Left Audio Status & Restart Pill */}
+      <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-30 pointer-events-auto flex items-center gap-2">
         <button
+          type="button"
           onClick={toggleSound}
-          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl font-black text-xs uppercase tracking-wide shadow-xl backdrop-blur-md transition-all cursor-pointer border ${
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl font-black text-xs uppercase tracking-wide shadow-xl transition-all cursor-pointer border ${
             !isMuted 
-              ? 'bg-emerald-600/95 text-white border-emerald-400/60 hover:bg-emerald-500 shadow-emerald-500/40' 
-              : 'bg-gradient-to-r from-orange-600 to-red-600 text-white border-white/50 animate-pulse hover:scale-105 active:scale-95 shadow-red-500/40'
+              ? 'bg-blue-600 text-white border-white/40 hover:bg-blue-500 shadow-blue-600/40' 
+              : 'bg-orange-600 text-white border-white/50 animate-pulse hover:scale-105 shadow-orange-600/40'
           }`}
-          title={!isMuted ? "Voice is ON (100% volume)" : "Click to unmute voice"}
+          title={!isMuted ? "Sound is ON (100% volume)" : "Click to unmute sound"}
         >
           {!isMuted ? (
             <>
-              {/* Dancing sound equalizer bars */}
-              <div className="flex items-end gap-0.5 h-3.5">
-                <span className="w-1 bg-white rounded-full animate-[pulse_0.6s_ease-in-out_infinite] h-3"></span>
-                <span className="w-1 bg-white rounded-full animate-[pulse_0.4s_ease-in-out_infinite] h-2"></span>
-                <span className="w-1 bg-white rounded-full animate-[pulse_0.8s_ease-in-out_infinite] h-3.5"></span>
-              </div>
-              <span>🔊 SOUND ON (100%)</span>
+              <Volume2 className="w-4 h-4 text-white" />
+              <span>SOUND ON (100% LOUD)</span>
             </>
           ) : (
             <>
               <VolumeX className="w-4 h-4 text-white" />
-              <span className="font-extrabold">CLICK FOR SOUND 🔊</span>
+              <span>CLICK FOR LOUD SOUND 🔊</span>
             </>
           )}
         </button>
+
+        {/* Play From Beginning Quick Button */}
+        <button
+          type="button"
+          onClick={handleVideoClick}
+          className="p-2 rounded-xl bg-black/70 hover:bg-black text-white border border-white/30 text-xs font-bold transition-all shadow-md cursor-pointer flex items-center gap-1"
+          title="Play from start with sound"
+        >
+          <RotateCcw className="w-3.5 h-3.5" />
+          <span className="hidden sm:inline text-[10px] uppercase">Restart</span>
+        </button>
       </div>
 
-      {/* Live Demonstration Badge - Top Right */}
+      {/* Student Proof Badge - Top Right */}
       <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 pointer-events-none">
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md text-amber-300 border border-amber-500/40 text-[10px] sm:text-[11px] font-black tracking-wider uppercase shadow">
-          <span className="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/80 text-white border border-orange-500 text-[10px] sm:text-[11px] font-black tracking-wider uppercase shadow">
+          <span className="w-2 h-2 rounded-full bg-orange-500 animate-ping"></span>
           <span>STUDENT PROOF</span>
         </span>
       </div>

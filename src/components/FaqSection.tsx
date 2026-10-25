@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { HelpCircle, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
-import { OFFICIAL_PURCHASE_URL } from './Navbar';
+import { HelpCircle, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
 
 export default function FaqSection() {
   const faqs = [
@@ -14,7 +13,7 @@ export default function FaqSection() {
     },
     {
       q: "Can I really do everything (including ₦450 domains & ₦500 hosting) on my smartphone?",
-      a: "YES! The complete step-by-step workflow — from generating website structures to purchasing custom domains for ₦450, setting up hosting for ₦500, uploading files, and integrating Paystack payment buttons — can be carried out right from your mobile phone browser."
+      a: "YES! The complete step-by-step workflow (from generating website structures to purchasing custom domains for ₦450, setting up hosting for ₦500, uploading files, and integrating Paystack payment buttons) can be carried out right from your mobile phone browser."
     },
     {
       q: "Will I learn how to host websites?",
@@ -58,7 +57,7 @@ export default function FaqSection() {
     },
     {
       q: "How do I purchase?",
-      a: "Click any BUY NOW button on the page and complete your purchase through Selar."
+      a: "Click any BUY NOW button on this page and complete your enrollment securely via Paystack."
     }
   ];
 
@@ -75,39 +74,37 @@ export default function FaqSection() {
   };
 
   return (
-    <section id="faq" className="py-20 lg:py-24 bg-white text-slate-900 border-b border-sky-100">
+    <section id="faq" className="py-20 lg:py-24 bg-white text-black border-b border-black/10">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Pre-FAQ CTA Banner in bright vibrant Orange & Red */}
-        <div className="mb-16 p-8 rounded-3xl bg-gradient-to-r from-red-600 via-orange-500 to-amber-500 text-white text-center shadow-xl border-2 border-orange-300">
-          <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white mb-2">
+        {/* Pre-FAQ CTA Banner in solid Orange */}
+        <div className="mb-12 sm:mb-16 p-5 sm:p-8 rounded-2xl sm:rounded-3xl bg-orange-600 text-white text-center shadow-xl border-2 border-orange-500">
+          <h3 className="text-lg sm:text-2xl font-black uppercase tracking-tight text-white mb-2">
             HAVE QUESTIONS OR READY TO DIVE IN?
           </h3>
-          <p className="text-xs sm:text-sm text-orange-100 max-w-lg mx-auto mb-6 font-semibold">
+          <p className="text-xs sm:text-sm text-white/90 max-w-lg mx-auto mb-6 font-semibold">
             Get instant access right now for only ₦5,000 and start learning immediately.
           </p>
           <a
-            href={OFFICIAL_PURCHASE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-white text-orange-600 font-black text-sm sm:text-base shadow-lg hover:bg-slate-100 hover:scale-[1.02] active:scale-[0.98] transition-all uppercase tracking-wide"
+            href="#checkout"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 sm:px-8 rounded-xl bg-white text-orange-600 font-black text-xs sm:text-base shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all uppercase tracking-wide cursor-pointer"
           >
-            <span>GET INSTANT ACCESS</span>
-            <ExternalLink className="w-4 h-4 opacity-90" />
+            <span>ENROLL NOW VIA PAYSTACK</span>
+            <ArrowRight className="w-4 h-4 shrink-0" />
           </a>
         </div>
 
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-blue-100 border border-blue-300 text-blue-900 text-xs sm:text-sm font-black uppercase tracking-wider mb-4 shadow-sm">
-            <HelpCircle className="w-4 h-4 text-blue-600" />
+          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-blue-600 text-white text-xs sm:text-sm font-black uppercase tracking-wider mb-4 shadow-sm">
+            <HelpCircle className="w-4 h-4 text-white" />
             <span>CLARITY &amp; ANSWERS</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-slate-950">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-black">
             FREQUENTLY ASKED QUESTIONS
           </h2>
-          <p className="mt-3 text-base text-slate-700 font-semibold">
+          <p className="mt-3 text-base text-black/80 font-semibold">
             Everything you need to know about the course, equipment requirements, support, and access.
           </p>
         </div>
@@ -117,35 +114,33 @@ export default function FaqSection() {
           {faqs.map((faq, idx) => (
             <div
               key={idx}
-              className="rounded-2xl border-2 border-slate-200 bg-white overflow-hidden transition-all hover:border-sky-400"
+              className="rounded-2xl border-2 border-black/10 bg-white overflow-hidden transition-all hover:border-blue-600"
             >
               <button
                 onClick={() => toggleFaq(idx)}
-                className="w-full text-left p-5 sm:p-6 flex items-center justify-between gap-4 cursor-pointer bg-slate-50/60 hover:bg-sky-50/40 transition-colors"
+                className="w-full text-left p-5 sm:p-6 flex items-center justify-between gap-4 cursor-pointer bg-black/5 hover:bg-black/10 transition-colors"
               >
-                <span className="text-base sm:text-lg font-black text-slate-900">
+                <span className="text-base sm:text-lg font-black text-black">
                   {faq.q}
                 </span>
-                <span className="p-1 rounded-lg text-slate-400 shrink-0">
+                <span className="p-1 rounded-lg text-black/50 shrink-0">
                   {openIndexes[idx] ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
                 </span>
               </button>
 
               {openIndexes[idx] && (
-                <div className="p-5 sm:p-6 pt-3 border-t border-slate-100 bg-white">
-                  <p className="text-sm sm:text-base text-slate-700 leading-relaxed font-semibold">
+                <div className="p-5 sm:p-6 pt-3 border-t border-black/10 bg-white">
+                  <p className="text-sm sm:text-base text-black/80 leading-relaxed font-semibold">
                     {faq.a}
                   </p>
                   {faq.q.includes("purchase") && (
                     <div className="mt-3">
                       <a
-                        href={OFFICIAL_PURCHASE_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-xs font-black text-blue-600 hover:text-orange-600"
+                        href="#checkout"
+                        className="inline-flex items-center gap-1.5 text-xs font-black text-orange-600 hover:text-blue-600"
                       >
-                        <span>Go to Official Selar Checkout ({OFFICIAL_PURCHASE_URL})</span>
-                        <ExternalLink className="w-3.5 h-3.5" />
+                        <span>Go to On-Page Paystack Checkout</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
                       </a>
                     </div>
                   )}

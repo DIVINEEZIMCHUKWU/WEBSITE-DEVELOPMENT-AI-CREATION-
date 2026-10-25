@@ -3,9 +3,8 @@ import {
   Flame, 
   ShieldCheck, 
   CheckCircle2, 
-  ExternalLink 
+  ArrowRight 
 } from 'lucide-react';
-import { OFFICIAL_PURCHASE_URL } from './Navbar';
 import { trackMetaInitiateCheckout } from '../utils/metaPixel';
 
 export default function FinalSalesSection() {
@@ -21,14 +20,11 @@ export default function FinalSalesSection() {
   ];
 
   return (
-    <section className="py-24 lg:py-32 bg-gradient-to-br from-blue-700 via-sky-600 to-blue-800 text-white relative overflow-hidden">
-      {/* Background glow effects */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-orange-400/20 blur-[130px] rounded-full pointer-events-none" />
-
+    <section className="py-24 lg:py-32 bg-blue-600 text-white relative overflow-hidden">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
         
         {/* Top Mini Pill */}
-        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-orange-500 text-white text-xs sm:text-sm font-black uppercase tracking-wider mb-6 shadow-md">
+        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-orange-600 text-white text-xs sm:text-sm font-black uppercase tracking-wider mb-6 shadow-md">
           <Flame className="w-4 h-4 fill-white" />
           <span>YOUR DIGITAL SKILL TRANSFORMATION</span>
         </div>
@@ -39,7 +35,7 @@ export default function FinalSalesSection() {
         </h2>
 
         {/* Lead Copy */}
-        <p className="mt-6 text-base sm:text-lg md:text-xl text-sky-100 font-semibold max-w-2xl mx-auto leading-relaxed">
+        <p className="mt-6 text-base sm:text-lg md:text-xl text-white/90 font-semibold max-w-2xl mx-auto leading-relaxed">
           “You don't need to wait until you're an expert programmer before you start learning how modern websites can be built with AI.”
         </p>
 
@@ -48,22 +44,22 @@ export default function FinalSalesSection() {
           {learningPillars.map((text, i) => (
             <div
               key={i}
-              className="p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs sm:text-sm font-bold flex items-center gap-2.5 shadow-sm"
+              className="p-4 rounded-xl bg-white/10 border border-white/20 text-white text-xs sm:text-sm font-bold flex items-center gap-2.5 shadow-sm"
             >
-              <CheckCircle2 className="w-4 h-4 text-amber-300 shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-orange-400 shrink-0" />
               <span>{text}</span>
             </div>
           ))}
         </div>
 
         {/* Pricing Box in bright contrast */}
-        <div className="mt-14 max-w-lg mx-auto rounded-3xl bg-slate-950 border-4 border-orange-500 p-8 sm:p-10 shadow-2xl relative text-white">
+        <div className="mt-14 max-w-lg mx-auto rounded-3xl bg-black border-4 border-orange-500 p-8 sm:p-10 shadow-2xl relative text-white">
           
-          <div className="text-xs font-black uppercase tracking-wider text-slate-400">
+          <div className="text-xs font-black uppercase tracking-wider text-white/60">
             REGULAR:
           </div>
-          <div className="text-2xl font-black text-red-400 line-through decoration-red-500 decoration-3">
-            ₦15,000
+          <div className="text-2xl font-black text-white/50 line-through">
+            ₦20,000
           </div>
 
           <div className="text-sm font-black uppercase text-orange-400 tracking-wider mt-3">
@@ -73,29 +69,30 @@ export default function FinalSalesSection() {
             ₦5,000
           </div>
 
-          <div className="mt-2 text-sm font-bold uppercase text-slate-300 tracking-wider">
+          <div className="mt-2 text-sm font-bold uppercase text-white/80 tracking-wider">
             “ONE-TIME PAYMENT”
           </div>
 
           {/* Master CTA Button */}
           <div className="mt-8">
             <a
-              href={OFFICIAL_PURCHASE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => trackMetaInitiateCheckout('Final Section Pricing Box CTA')}
-              className="w-full inline-flex items-center justify-center gap-3 px-8 py-5 rounded-2xl bg-gradient-to-r from-red-600 via-orange-500 to-orange-600 text-white font-black text-base sm:text-lg shadow-2xl shadow-orange-500/50 hover:scale-[1.02] active:scale-[0.98] transition-all uppercase tracking-wider animate-attention-pulse text-center"
+              href="#checkout"
+              onClick={() => trackMetaInitiateCheckout('Final Sales Section')}
+              className="animate-attention-pulse relative overflow-hidden w-full inline-flex items-center justify-center gap-3 px-8 py-5 rounded-2xl bg-orange-600 hover:bg-orange-500 text-white font-black text-base sm:text-lg shadow-2xl shadow-orange-600/50 hover:scale-[1.03] active:scale-[0.98] transition-all uppercase tracking-wider text-center cursor-pointer border border-white/20"
             >
-              <span>👉 BUY NOW — GET INSTANT ACCESS</span>
-              <ExternalLink className="w-5 h-5 shrink-0" />
+              {/* Subtle glass shimmer sweep */}
+              <span className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/25 to-transparent -skew-x-12 -translate-x-full hover:translate-x-[300%] transition-transform duration-1000 ease-in-out pointer-events-none" />
+
+              <span className="relative z-10">👉 BUY NOW: GET INSTANT ACCESS</span>
+              <ArrowRight className="w-5 h-5 shrink-0 relative z-10" />
             </a>
 
             <div className="mt-4 space-y-1">
-              <p className="text-xs text-slate-300 font-bold flex items-center justify-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>Secure checkout through Selar.</span>
+              <p className="text-xs text-white/80 font-bold flex items-center justify-center gap-1.5">
+                <ShieldCheck className="w-4 h-4 text-blue-400 shrink-0" />
+                <span>Secure on-page Paystack checkout.</span>
               </p>
-              <p className="text-[11px] text-amber-300/90 italic font-semibold">
+              <p className="text-[11px] text-orange-300 italic font-semibold">
                 “Promotional pricing may change.”
               </p>
             </div>

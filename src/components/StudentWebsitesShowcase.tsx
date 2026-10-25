@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { ExternalLink, Globe, Laptop, ArrowRight, CheckCircle2, Flame, Sparkles } from 'lucide-react';
-import { OFFICIAL_PURCHASE_URL } from './Navbar';
-import { trackMetaInitiateCheckout } from '../utils/metaPixel';
+import { ExternalLink, Globe, ArrowRight } from 'lucide-react';
 
 interface StudentSite {
   name: string;
@@ -14,12 +12,28 @@ interface StudentSite {
 
 const STUDENT_WEBSITES: StudentSite[] = [
   {
+    name: 'Glozen',
+    url: 'https://glozen.vercel.app',
+    category: 'E-Commerce & Digital Store',
+    categoryTag: 'COMMERCE',
+    desc: 'Clean, modern digital storefront with product collections, responsive catalog, and direct customer ordering.',
+    badgeColor: 'bg-blue-600 text-white border-blue-600',
+  },
+  {
+    name: "El's Delight Treats",
+    url: 'https://elsdelighttreats.vercel.app',
+    category: 'Confectionery & Food Treats',
+    categoryTag: 'COMMERCE',
+    desc: 'Mouth-watering confectionery showcase with custom pastry orders, festive packages, and treat menus.',
+    badgeColor: 'bg-orange-600 text-white border-orange-600',
+  },
+  {
     name: 'Henrand Nig',
     url: 'https://www.henrandnig.com',
     category: 'Engineering & Enterprise',
     categoryTag: 'BUSINESS',
     desc: 'High-level engineering, procurement, industrial project management, and corporate enterprise portal.',
-    badgeColor: 'bg-blue-100 text-blue-800 border-blue-300',
+    badgeColor: 'bg-blue-600 text-white border-blue-600',
   },
   {
     name: 'Mubkdaneji',
@@ -27,7 +41,7 @@ const STUDENT_WEBSITES: StudentSite[] = [
     category: 'Brand & IT Solutions',
     categoryTag: 'BUSINESS',
     desc: 'Cutting-edge digital media agency, technology consulting, and brand engineering website.',
-    badgeColor: 'bg-orange-100 text-orange-800 border-orange-300',
+    badgeColor: 'bg-orange-600 text-white border-orange-600',
   },
   {
     name: 'Mardeeyah Hospital',
@@ -35,7 +49,7 @@ const STUDENT_WEBSITES: StudentSite[] = [
     category: 'Healthcare & Hospital',
     categoryTag: 'HEALTH',
     desc: 'Full hospital & maternity medical portal with service schedules, patient info, and appointment inquiries.',
-    badgeColor: 'bg-emerald-100 text-emerald-800 border-emerald-300',
+    badgeColor: 'bg-blue-600 text-white border-blue-600',
   },
   {
     name: 'Binnas Logistics Global',
@@ -43,7 +57,7 @@ const STUDENT_WEBSITES: StudentSite[] = [
     category: 'Logistics & Cargo',
     categoryTag: 'LOGISTICS',
     desc: 'International shipping, cargo forwarding, customs clearing, and freight delivery tracking platform.',
-    badgeColor: 'bg-blue-100 text-blue-800 border-blue-300',
+    badgeColor: 'bg-blue-600 text-white border-blue-600',
   },
   {
     name: 'Abu Qoonitah Academy',
@@ -51,7 +65,7 @@ const STUDENT_WEBSITES: StudentSite[] = [
     category: 'School & E-Learning',
     categoryTag: 'EDUCATION',
     desc: 'Comprehensive Islamic & modern academic school website with admissions, curriculum, and parent updates.',
-    badgeColor: 'bg-sky-100 text-sky-800 border-sky-300',
+    badgeColor: 'bg-orange-600 text-white border-orange-600',
   },
   {
     name: 'Go Empower Initiative',
@@ -59,7 +73,7 @@ const STUDENT_WEBSITES: StudentSite[] = [
     category: 'NGO & Foundation',
     categoryTag: 'NGO',
     desc: 'Youth empowerment and community development non-governmental foundation with programs and donation calls.',
-    badgeColor: 'bg-orange-100 text-orange-800 border-orange-300',
+    badgeColor: 'bg-blue-600 text-white border-blue-600',
   },
   {
     name: 'The Roadmap News',
@@ -67,7 +81,7 @@ const STUDENT_WEBSITES: StudentSite[] = [
     category: 'News & Media',
     categoryTag: 'BUSINESS',
     desc: 'Digital news journalism website with categorized breaking news, editorial columns, and responsive reading.',
-    badgeColor: 'bg-red-100 text-red-800 border-red-300',
+    badgeColor: 'bg-orange-600 text-white border-orange-600',
   },
   {
     name: 'Ashmid Academy',
@@ -75,7 +89,7 @@ const STUDENT_WEBSITES: StudentSite[] = [
     category: 'School & College',
     categoryTag: 'EDUCATION',
     desc: 'Modern accredited academic institution portal with academic calendar, school events, and student portal.',
-    badgeColor: 'bg-indigo-100 text-indigo-800 border-indigo-300',
+    badgeColor: 'bg-blue-600 text-white border-blue-600',
   },
   {
     name: 'Rozay Kitchen',
@@ -83,7 +97,7 @@ const STUDENT_WEBSITES: StudentSite[] = [
     category: 'Food & Catering',
     categoryTag: 'BUSINESS',
     desc: 'Restaurant and culinary catering service website showcasing mouth-watering food menus and order bookings.',
-    badgeColor: 'bg-amber-100 text-amber-800 border-amber-300',
+    badgeColor: 'bg-orange-600 text-white border-orange-600',
   },
   {
     name: 'BLOM Organization',
@@ -91,7 +105,7 @@ const STUDENT_WEBSITES: StudentSite[] = [
     category: 'Non-Profit & Advocacy',
     categoryTag: 'NGO',
     desc: 'Community advocacy NGO platform highlighting social impact projects, volunteer opportunities, and reports.',
-    badgeColor: 'bg-teal-100 text-teal-800 border-teal-300',
+    badgeColor: 'bg-blue-600 text-white border-blue-600',
   },
   {
     name: 'Al-Ameen Clinic & Maternity',
@@ -99,7 +113,7 @@ const STUDENT_WEBSITES: StudentSite[] = [
     category: 'Hospital & Maternity',
     categoryTag: 'HEALTH',
     desc: 'Healthcare facility website with maternity care services, clinical diagnostics, and doctor consultation forms.',
-    badgeColor: 'bg-emerald-100 text-emerald-800 border-emerald-300',
+    badgeColor: 'bg-orange-600 text-white border-orange-600',
   },
   {
     name: 'Davic Cooling Systems Limited',
@@ -107,7 +121,7 @@ const STUDENT_WEBSITES: StudentSite[] = [
     category: 'Engineering & HVAC',
     categoryTag: 'BUSINESS',
     desc: 'Industrial cooling, commercial air conditioning, refrigeration maintenance, and technical contract services.',
-    badgeColor: 'bg-cyan-100 text-cyan-800 border-cyan-300',
+    badgeColor: 'bg-blue-600 text-white border-blue-600',
   },
   {
     name: 'Al-Ishbeeliy Gadgets Venture',
@@ -115,7 +129,7 @@ const STUDENT_WEBSITES: StudentSite[] = [
     category: 'Gadgets & Tech Store',
     categoryTag: 'COMMERCE',
     desc: 'E-commerce showcase for brand new smartphones, laptops, electronics, and tech accessories.',
-    badgeColor: 'bg-purple-100 text-purple-800 border-purple-300',
+    badgeColor: 'bg-orange-600 text-white border-orange-600',
   },
   {
     name: 'Hope Xavier First Academy',
@@ -123,79 +137,15 @@ const STUDENT_WEBSITES: StudentSite[] = [
     category: 'Primary & Secondary School',
     categoryTag: 'EDUCATION',
     desc: 'Premier educational academy website with admissions guidelines, school gallery, and academic programs.',
-    badgeColor: 'bg-sky-100 text-sky-800 border-sky-300',
+    badgeColor: 'bg-blue-600 text-white border-blue-600',
   },
   {
     name: 'Qaadatul Ghad Foundation',
     url: 'https://qaadatul-ghad-islamic-foundation-875365047876.europe-west2.run.app',
-    category: 'Islamic Foundation',
+    category: 'Foundation & Relief',
     categoryTag: 'NGO',
-    desc: 'Faith-based charity, community outreach, and Islamic educational foundation platform.',
-    badgeColor: 'bg-green-100 text-green-800 border-green-300',
-  },
-  {
-    name: 'Chic Gecko Boutique',
-    url: 'https://chic-gecko-5d281f.netlify.app',
-    category: 'Fashion & Boutique',
-    categoryTag: 'COMMERCE',
-    desc: 'Fashion brand lookbook and apparel catalog showcasing modern designs and customer purchase flows.',
-    badgeColor: 'bg-rose-100 text-rose-800 border-rose-300',
-  },
-  {
-    name: 'NumaWiz Studios',
-    url: 'https://numawizstudios.netlify.app',
-    category: 'Creative Media Studio',
-    categoryTag: 'BUSINESS',
-    desc: 'Digital media agency, photography, video production, and commercial creative portfolio.',
-    badgeColor: 'bg-orange-100 text-orange-800 border-orange-300',
-  },
-  {
-    name: 'Umar Faruq Sa Venture',
-    url: 'https://umarfaruqsaventure.netlify.app',
-    category: 'Commercial Enterprise',
-    categoryTag: 'BUSINESS',
-    desc: 'Business enterprise website for commercial trade, general merchandise, and supply contracts.',
-    badgeColor: 'bg-blue-100 text-blue-800 border-blue-300',
-  },
-  {
-    name: 'ChipPortal Activity Hub',
-    url: 'https://chipportal.netlify.app/activity',
-    category: 'Web App & Portal',
-    categoryTag: 'BUSINESS',
-    desc: 'Interactive web platform with dynamic user activity tracking, status feeds, and member accounts.',
-    badgeColor: 'bg-sky-100 text-sky-800 border-sky-300',
-  },
-  {
-    name: 'Creative Photo & Flyer Hub',
-    url: 'https://ai-photo-editing-and-flyer-design.netlify.app',
-    category: 'Design & Graphics',
-    categoryTag: 'BUSINESS',
-    desc: 'Creative graphic design studio site for flyer commissions, photo editing, and marketing assets.',
-    badgeColor: 'bg-amber-100 text-amber-800 border-amber-300',
-  },
-  {
-    name: 'Effervescent Madeleine',
-    url: 'https://effervescent-madeleine-b41fcd.netlify.app',
-    category: 'Beauty & Lifestyle',
-    categoryTag: 'COMMERCE',
-    desc: 'Boutique beauty, skincare, and luxury lifestyle catalog with interactive product sections.',
-    badgeColor: 'bg-pink-100 text-pink-800 border-pink-300',
-  },
-  {
-    name: 'Kaleidoscopic Events',
-    url: 'https://Kaleidoscopic-lollipop-4afacb.netlify.app',
-    category: 'Events & Entertainment',
-    categoryTag: 'BUSINESS',
-    desc: 'Event planning, entertainment services, party management, and celebration bookings.',
-    badgeColor: 'bg-purple-100 text-purple-800 border-purple-300',
-  },
-  {
-    name: 'Scintillating Moxie Agency',
-    url: 'https://scintillating-moxie-41c8a0.netlify.app',
-    category: 'Digital Agency',
-    categoryTag: 'BUSINESS',
-    desc: 'Modern tech solutions and business growth agency showcase with contact forms and case studies.',
-    badgeColor: 'bg-sky-100 text-sky-800 border-sky-300',
+    desc: 'Islamic humanitarian foundation website with welfare initiatives, orphan sponsorship, and impact reports.',
+    badgeColor: 'bg-orange-600 text-white border-orange-600',
   },
 ];
 
@@ -208,22 +158,22 @@ export default function StudentWebsitesShowcase() {
   });
 
   return (
-    <section id="student-websites" className="py-20 lg:py-28 bg-white text-slate-900 border-b border-sky-100 relative">
+    <section id="student-websites" className="py-20 lg:py-28 bg-white text-black border-b border-black/10 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="text-center max-w-4xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-sky-100 border border-sky-300 text-sky-900 text-xs sm:text-sm font-black uppercase tracking-wider mb-4 shadow-sm">
-            <Globe className="w-4 h-4 text-sky-600" />
+          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-blue-600 text-white text-xs sm:text-sm font-black uppercase tracking-wider mb-4 shadow-sm">
+            <Globe className="w-4 h-4 text-white" />
             <span>REAL RESULTS FROM REAL STUDENTS</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-slate-950 tracking-tight uppercase leading-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-black tracking-tight uppercase leading-tight">
             LIVE WEBSITES BUILT BY OUR STUDENTS
           </h2>
 
-          <p className="mt-4 text-base sm:text-lg text-slate-700 font-semibold max-w-3xl mx-auto">
-            These are not mockups or theoretical designs. These are live, fully functional websites built and deployed by students who took this training — across hospitals, logistics, schools, NGOs, news portals, and ecommerce businesses.
+          <p className="mt-4 text-base sm:text-lg text-black/80 font-semibold max-w-3xl mx-auto">
+            These are not mockups or theoretical designs. These are live, fully functional websites built and deployed by students who took this training: across hospitals, logistics, schools, NGOs, news portals, and ecommerce businesses.
           </p>
         </div>
 
@@ -241,10 +191,10 @@ export default function StudentWebsitesShowcase() {
             <button
               key={tab.id}
               onClick={() => setFilter(tab.id)}
-              className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all cursor-pointer ${
+              className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-black transition-all duration-300 cursor-pointer ${
                 filter === tab.id
-                  ? 'bg-gradient-to-r from-blue-600 to-sky-600 text-white shadow-md shadow-sky-500/30'
-                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30 scale-105 border border-white/20'
+                  : 'bg-black/5 text-black hover:bg-black/10 border border-black/10 hover:scale-102'
               }`}
             >
               {tab.label}
@@ -257,62 +207,60 @@ export default function StudentWebsitesShowcase() {
           {filteredSites.map((site, index) => (
             <div
               key={index}
-              className="rounded-2xl border-2 border-slate-200 hover:border-sky-500 bg-white p-5 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
+              className="rounded-2xl border-2 border-black/10 hover:border-blue-600 bg-white/95 backdrop-blur-md p-5 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group"
             >
               <div>
-                {/* Browser top-bar aesthetic */}
-                <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100">
+                {/* Browser top-bar aesthetic with morphism border */}
+                <div className="flex items-center justify-between pb-3 mb-3 border-b border-black/10">
                   <div className="flex items-center gap-1.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-red-400"></span>
-                    <span className="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                    <span className="w-2.5 h-2.5 rounded-full bg-black/30"></span>
+                    <span className="w-2.5 h-2.5 rounded-full bg-black/30"></span>
+                    <span className="w-2.5 h-2.5 rounded-full bg-black/30"></span>
                   </div>
                   <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider border ${site.badgeColor}`}>
                     {site.category}
                   </span>
                 </div>
 
-                <h3 className="text-lg font-black text-slate-900 group-hover:text-blue-600 transition-colors">
+                <h3 className="text-lg font-black text-black group-hover:text-blue-600 transition-colors">
                   {site.name}
                 </h3>
 
-                <p className="mt-2 text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
+                <p className="mt-2 text-xs sm:text-sm text-black/70 font-medium leading-relaxed">
                   {site.desc}
                 </p>
               </div>
 
-              {/* Action Button: Live External Link - Animated Button Shape */}
-              <div className="mt-5 pt-4 border-t border-slate-100 flex flex-col gap-2">
+              {/* Action Button: Live External Link with Morphism Vibes & Animated Shimmer */}
+              <div className="mt-5 pt-4 border-t border-black/10 flex flex-col gap-2">
                 <a
                   href={site.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="relative group/btn overflow-hidden w-full flex items-center justify-between px-4 py-3 rounded-xl bg-gradient-to-r from-blue-600 via-sky-600 to-blue-700 hover:from-blue-700 hover:to-sky-800 text-white font-black text-xs uppercase tracking-wider shadow-md hover:shadow-xl shadow-blue-500/25 hover:scale-[1.02] active:scale-[0.98] transition-all border border-blue-400/30"
+                  className="relative group/btn overflow-hidden w-full flex items-center justify-between px-4 py-3.5 rounded-xl morphism-glass-blue hover:bg-blue-600 text-white font-black text-xs uppercase tracking-wider shadow-[0_8px_20px_rgba(37,99,235,0.3)] hover:shadow-[0_14px_30px_rgba(37,99,235,0.5)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 cursor-pointer"
                 >
-                  {/* Shimmer light sweep animation across button on hover */}
-                  <div className="absolute inset-0 -translate-x-full group-hover/btn:translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 ease-in-out pointer-events-none" />
+                  {/* Morphism Shimmer Highlight sweep */}
+                  <span className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 -translate-x-full group-hover/btn:translate-x-[300%] transition-transform duration-1000 ease-in-out pointer-events-none" />
 
-                  <div className="flex items-center gap-2">
-                    {/* Animated Pulsing Live Green Dot */}
+                  <div className="relative z-10 flex items-center gap-2.5">
                     <span className="relative flex h-2.5 w-2.5 shrink-0">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400"></span>
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-80"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-white"></span>
                     </span>
-                    <Globe className="w-4 h-4 shrink-0 transition-transform group-hover/btn:rotate-12 text-sky-200" />
+                    <Globe className="w-4 h-4 shrink-0 text-white" />
                     <span className="tracking-wide">VISIT LIVE WEBSITE</span>
                   </div>
 
-                  <div className="flex items-center gap-1 text-sky-200 group-hover/btn:text-white transition-colors">
-                    <span className="text-[10px] font-bold hidden xs:inline uppercase opacity-90">Open</span>
-                    <ExternalLink className="w-3.5 h-3.5 shrink-0 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+                  <div className="relative z-10 flex items-center gap-1 text-white group-hover/btn:translate-x-1 transition-transform">
+                    <ExternalLink className="w-3.5 h-3.5 shrink-0" />
                   </div>
                 </a>
 
-                <div className="flex items-center justify-between text-[11px] text-slate-500 font-semibold px-1">
-                  <span className="text-emerald-600 font-bold flex items-center gap-1">
+                <div className="flex items-center justify-between text-[11px] text-black/60 font-semibold px-1">
+                  <span className="text-blue-600 font-bold">
                     ✓ 100% Student Built
                   </span>
-                  <span className="text-slate-400 truncate max-w-[140px]">
+                  <span className="text-black/50 truncate max-w-[140px]">
                     {site.url.replace('https://', '')}
                   </span>
                 </div>
@@ -320,30 +268,27 @@ export default function StudentWebsitesShowcase() {
             </div>
           ))}
 
-          {/* Highlight Card: Want to see more or build yours? Direct Selar Product Link */}
-          <div className="rounded-2xl border-2 border-orange-400 bg-gradient-to-br from-orange-500 via-amber-500 to-red-500 p-6 text-white shadow-xl flex flex-col justify-between">
+          {/* Highlight Card: Want to build yours? Scroll to On-Page Checkout */}
+          <div className="rounded-2xl border-2 border-orange-600 bg-orange-600 p-6 text-white shadow-xl flex flex-col justify-between">
             <div>
-              <div className="inline-block px-3 py-1 rounded-full bg-white/20 text-white text-xs font-black uppercase tracking-wider mb-4">
-                Want To See Even More?
+              <div className="inline-block px-3 py-1 rounded-full bg-black/20 text-white text-xs font-black uppercase tracking-wider mb-4">
+                Want To Build Yours?
               </div>
               <h3 className="text-xl sm:text-2xl font-black text-white leading-tight uppercase">
                 DOZENS OF WEBSITES LAUNCHED MONTHLY
               </h3>
-              <p className="mt-3 text-xs sm:text-sm text-white/90 font-semibold leading-relaxed">
-                Our students are launching websites for clients every single week. Click below to view the official course on Selar, explore more student builds, and secure your access for only ₦5,000!
+              <p className="mt-3 text-xs sm:text-sm text-white/95 font-semibold leading-relaxed">
+                Our students are launching websites for clients every single week. Enroll today on this page for only ₦5,000 and get instant WhatsApp onboarding!
               </p>
             </div>
 
             <div className="mt-6">
               <a
-                href={OFFICIAL_PURCHASE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => trackMetaInitiateCheckout('Student Websites Showcase Card CTA')}
-                className="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-white text-orange-600 font-black text-sm uppercase tracking-wider shadow-lg hover:bg-slate-100 hover:scale-[1.02] transition-all text-center"
+                href="#checkout"
+                className="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-white text-orange-600 hover:bg-white/90 font-black text-sm uppercase tracking-wider shadow-lg hover:scale-[1.02] transition-all text-center"
               >
-                <span>GET THE COURSE &amp; SEE MORE ON SELAR</span>
-                <ExternalLink className="w-4 h-4" />
+                <span>ENROLL NOW FOR ₦5,000 VIA PAYSTACK</span>
+                <ArrowRight className="w-4 h-4" />
               </a>
             </div>
           </div>

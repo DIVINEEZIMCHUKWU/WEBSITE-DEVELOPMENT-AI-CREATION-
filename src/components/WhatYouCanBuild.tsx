@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layout, Globe, ArrowUpRight, Laptop, Sparkles } from 'lucide-react';
+import { Layout, Globe, ArrowUpRight, Laptop } from 'lucide-react';
 import { OFFICIAL_PURCHASE_URL } from './Navbar';
 
 export default function WhatYouCanBuild() {
@@ -145,7 +145,7 @@ export default function WhatYouCanBuild() {
                   <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-black/30 backdrop-blur-sm text-white">
                     {item.badge}
                   </span>
-                  <Sparkles className="w-4 h-4 text-white/70" />
+                  <Globe className="w-4 h-4 text-white/70" />
                 </div>
                 <div className="relative z-10">
                   <p className="text-sm font-extrabold tracking-tight uppercase line-clamp-1">
