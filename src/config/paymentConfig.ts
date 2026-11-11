@@ -144,13 +144,40 @@ export function trackMetaPixelInitiateCheckout(buttonLocation: string = 'On-Page
 }
 
 /**
- * Generate WhatsApp redirect URL with customized onboarding message
+ * Generate formatted WhatsApp message text
  */
-export function generateWhatsAppRedirectUrl(customerName?: string, reference?: string): string {
-  const phone = getWhatsAppPhoneNumber();
+export function getFormattedWhatsAppMessage(customerName?: string, reference?: string): string {
   let text = CUSTOM_WHATSAPP_MESSAGE;
   if (customerName || reference) {
     text += `\n\nName: ${customerName || 'Student'}\nPaystack Ref: ${reference || 'N/A'}`;
   }
+  return text;
+}
+
+/**
+ * Generate standard wa.me redirect URL
+ */
+export function generateWhatsAppRedirectUrl(customerName?: string, reference?: string): string {
+  const phone = getWhatsAppPhoneNumber();
+  const text = getFormattedWhatsAppMessage(customerName, reference);
   return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
 }
+
+/**
+ * Generate api.whatsapp.com universal link (more reliable in in-app browsers like Instagram & Facebook)
+ */
+export function generateWhatsAppUniversalUrl(customerName?: string, reference?: string): string {
+  const phone = getWhatsAppPhoneNumber();
+  const text = getFormattedWhatsAppMessage(customerName, reference);
+  return `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(text)}`;
+}
+
+/**
+ * Generate direct app deep link (bypasses browser redirects directly to the WhatsApp mobile app)
+ */
+export function generateWhatsAppDeepLink(customerName?: string, reference?: string): string {
+  const phone = getWhatsAppPhoneNumber();
+  const text = getFormattedWhatsAppMessage(customerName, reference);
+  return `whatsapp://send?phone=${phone}&text=${encodeURIComponent(text)}`;
+}
+
